@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
+import {RootStoreProvider} from "../../providers/root-store.provider";
 import EditZone from '../EditZone/EditZone';
-import Square from "../Square/Square";
 
 const Container = styled.div`
   height: 100vh;
@@ -13,15 +13,13 @@ const Container = styled.div`
 `;
 
 function App() {
-  return (
-    <Container>
-      <span>test</span>
-        <EditZone>
-            <span>Zone</span>
-            <Square />
-        </EditZone>
-    </Container>
-  );
+    return (
+        <RootStoreProvider>
+            <Container>
+                <EditZone />
+            </Container>
+        </RootStoreProvider>
+    );
 }
 
 export default App;
