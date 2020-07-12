@@ -5,6 +5,10 @@ export default function useDetectKeypress() {
     const {keyboardStore} = useRootStore();
 
     function onHold(e: KeyboardEvent) {
+        if(keyboardStore.pressedKeys[e.key]) {
+            return;
+        }
+
         keyboardStore.keyHold(e.key);
     }
 

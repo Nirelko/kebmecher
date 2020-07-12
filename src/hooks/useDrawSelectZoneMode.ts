@@ -1,13 +1,14 @@
 import {useEffect} from "react";
-import {EditorStore} from "../stores/editor.store";
 import {EditMode} from "../constants/keys-to-edit-mode.constant";
 import {calculateOnZoneLocation} from "../utils/select-zone.utils";
+import {useRootStore} from "../providers/root-store.provider";
 
 export default function useDrawSelectZoneMode(
-    drawableZone: HTMLElement,
-    drawableZoneRectangle: DOMRect,
-    editorStore: EditorStore
+    zoneRef: HTMLElement,
+    drawableZoneRectangle: DOMRect
 ) {
+    const {editorStore} = useRootStore();
+
     function onMouseMove(event: MouseEvent) {
         const {drawingSelectZone} = editorStore;
         if(!drawingSelectZone) {
@@ -46,18 +47,18 @@ export default function useDrawSelectZoneMode(
     }
 
     useEffect(() => {
-        if(!drawableZone) {
+        if(!zoneRef) {
             return;
         }
 
-        drawableZone.addEventListener('mousemove', onMouseMove, false);
-        drawableZone.addEventListener('mousedown', onHold, false)
-        drawableZone.addEventListener('mouseup', onRelease, false)
+        zoneRef.addEventListener('mousemove', onMouseMove, false);
+        zoneRef.addEventListener('mousedown', onHold, false)
+        zoneRef.addEventListener('mouseup', onRelease, false)
 
         return () => {
-            drawableZone.removeEventListener('mousemove', onMouseMove);
-            drawableZone.removeEventListener('mousedown', onHold);
-            drawableZone.removeEventListener('mouseup', onRelease);
+            zoneRef.removeEventListener('mousemove', onMouseMove);
+            zoneRef.removeEventListener('mousedown', onHold);
+            zoneRef.removeEventListener('mouseup', onRelease);
         }
-    }, [drawableZone]);
+    }, [zoneRef]);
 }
