@@ -3,7 +3,7 @@ import React from 'react';
 import {useRootStore} from "../../providers/root-store.provider";
 import FloatingRectangle from "../FloatingRectangle/FloatingRectangle";
 
-export default observer(function DrawingSelectZone() {
+function DrawingSelectZone() {
     const {editorStore} = useRootStore();
     const selectZone = editorStore.drawingSelectZone.convertToSelectZone();
 
@@ -15,4 +15,6 @@ export default observer(function DrawingSelectZone() {
     }
 
     return <FloatingRectangle style={locationStyle}/>;
-});
+}
+
+export default observer(DrawingSelectZone);

@@ -15,6 +15,7 @@ export function useZoomModes(zoneRef, zoomOptions) {
         }
 
         if(
+            !zoomOptions ||
             !zoomOptions.zoomWrapperRef ||
             !zoomOptions.zoomWrapperRef.wrapperRef ||
             !zoomOptions.zoomWrapperRef.wrapperRef.current
@@ -22,7 +23,7 @@ export function useZoomModes(zoneRef, zoomOptions) {
             // TODO: add error event
             return;
         }
-
+        
         event.stopPropagation();
 
         const doubleClickEvent = createMouseEvent({...event, type: 'dblclick'});
@@ -30,14 +31,14 @@ export function useZoomModes(zoneRef, zoomOptions) {
     }
 
     useEffect(() => {
-        if (!zoneRef || !zoomOptions) {
+        if (!zoneRef) {
             return;
         }
 
         zoneRef.addEventListener('dblclick', cancelPropagation, false);
 
         return () => zoneRef.removeEventListener('dblclick', cancelPropagation);
-    }, [zoneRef, zoomOptions])
+    }, [zoneRef])
 
     return applyZoom;
 }

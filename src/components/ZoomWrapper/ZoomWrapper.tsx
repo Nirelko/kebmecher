@@ -16,9 +16,25 @@ function ZoomWrapper({children}) {
         mode: editorStore.editMode === EditMode.zoomIn ? 'zoomIn' : 'zoomOut'
     }
 
+    const panSettings = {
+        disabled: editorStore.editMode !== EditMode.hand,
+        lockAxisX: false,
+        lockAxisY: false,
+        velocity: false,
+        velocityEqualToMove: false,
+        velocitySensitivity: 1,
+        velocityMinSpeed: 1.2,
+        velocityBaseTime: 1800,
+        velocityAnimationType: 'easeOut',
+        padding: true,
+        paddingSize: 0,
+        animationTime: 200,
+        animationType: 'easeOut'
+    }
+
     const featuresSettings = {
         wheel: disabled,
-        pan: disabled,
+        pan: panSettings,
         pinch: disabled,
         doubleClick: doubleClickSettings,
         scalePadding: disabled,

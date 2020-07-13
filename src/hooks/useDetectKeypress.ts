@@ -1,28 +1,50 @@
 import {useEffect} from "react";
 import {useRootStore} from "../providers/root-store.provider";
 
-export default function useDetectKeypress() {
-    const {keyboardStore} = useRootStore();
+export default function useDetectKeypress(zoneRef: HTMLElement) {
+    const {deviceInputStore} = useRootStore();
 
-    function onHold(e: KeyboardEvent) {
-        if(keyboardStore.pressedKeys[e.key]) {
+    function onMouseHold(event: MouseEvent) {
+        deviceInputStore.setMouseState(true);
+    }
+
+    function onMouseRelease(event: MouseEvent) {
+        deviceInputStore.setMouseState(false);
+    }
+
+    function onKeyHold(e: KeyboardEvent) {
+        if(deviceInputStore.pressedKeys[e.key]) {
             return;
         }
 
-        keyboardStore.keyHold(e.key);
+        deviceInputStore.keyHold(e.key);
     }
 
-    function onRelease(e: KeyboardEvent) {
-        keyboardStore.keyRelease(e.key);
+    function onKeyRelease(e: KeyboardEvent) {
+        deviceInputStore.keyRelease(e.key);
     }
 
     useEffect(() => {
-        document.addEventListener('keydown', onHold, false)
-        document.addEventListener('keyup', onRelease, false)
+        document.addEventListener('keydown', onKeyHold, false)
+        document.addEventListener('keyup', onKeyRelease, false)
 
         return () => {
-            document.removeEventListener('keydown', onHold)
-            document.removeEventListener('keyup', onRelease)
+            document.removeEventListener('keydown', onKeyHold)
+            document.removeEventListener('keyup', onKeyRelease)
         }
     }, []);
+
+    useEffect(() => {
+        if(!zoneRef) {
+            return;
+        }
+
+        zoneRef.addEventListener('mousedown', onMouseHold, false)
+        zoneRef.addEventListener('mouseup', onMouseRelease, false)
+
+        return () => {
+            zoneRef.removeEventListener('mousedown', onMouseHold);
+            zoneRef.removeEventListener('mouseup', onMouseRelease);
+        }
+    }, [zoneRef]);
 }

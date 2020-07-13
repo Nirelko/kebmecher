@@ -16,14 +16,14 @@ function SelectZone({selectZone}: SelectZoneProps) {
     const {editorStore} = useRootStore();
     const {rectangle: editZoneRectangle} = useEditZoneContext();
 
-    const onResizeStop = useCallback((event, dir, elementRef, delta: ResizableDelta) => {
+    const onResizeStop = useCallback((event, direction, elementRef, delta: ResizableDelta) => {
         const newPosition = {x: selectZone.x, y: selectZone.y};
 
-        const dirLower = dir.toLowerCase();
-        if(dirLower.indexOf('left') !== -1) {
+        const directionLowerCase = direction.toLowerCase();
+        if(directionLowerCase.indexOf('left') !== -1) {
             newPosition.x -= delta.width;
         }
-        if(dirLower.indexOf('top') !== -1) {
+        if(directionLowerCase.indexOf('top') !== -1) {
             newPosition.y -= delta.height;
         }
 

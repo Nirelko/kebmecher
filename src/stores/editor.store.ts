@@ -10,8 +10,8 @@ export class EditorStore extends BaseStore {
 
     @computed
     get editMode(): EditMode {
-        const {keyboardStore} = this.rootStore;
-        const pressedKeys = Object.keys(keyboardStore.pressedKeys);
+        const {deviceInputStore} = this.rootStore;
+        const pressedKeys = Object.keys(deviceInputStore.pressedKeys);
         const keyPress = pressedKeys.sort().join(" ");
 
         return KEYS_TO_EDIT_MODE[keyPress] || EditMode.free;

@@ -1,8 +1,9 @@
 import {BaseStore} from './base.store';
 import {action, observable} from 'mobx';
 
-export class KeyboardStore extends BaseStore {
+export class DeviceInputStore extends BaseStore {
     @observable pressedKeys: Record<string, boolean> = {};
+    @observable isMousePressed: boolean;
 
     constructor(props) {
         super(props);
@@ -16,5 +17,10 @@ export class KeyboardStore extends BaseStore {
     @action
     keyRelease(key: string) {
         delete this.pressedKeys[key];
+    }
+
+    @action
+    setMouseState(isPressed: boolean) {
+        this.isMousePressed = isPressed;
     }
 }

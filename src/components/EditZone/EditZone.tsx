@@ -1,8 +1,8 @@
 import React, {useMemo, useState} from "react";
-import {observer} from "mobx-react";
-import {CursorProperty} from "csstype";
+import {observer} from 'mobx-react';
+import {CursorProperty} from 'csstype';
 import styled from "styled-components";
-import {TransformComponent} from "react-zoom-pan-pinch/dist";
+import {TransformComponent} from 'react-zoom-pan-pinch/dist';
 import useDrawSelectZoneMode from "../../hooks/useDrawSelectZoneMode";
 import {useRootStore} from "../../providers/root-store.provider";
 import DrawingSelectZone from "../DrawingSelectZone/DrawingSelectZone";
@@ -33,7 +33,7 @@ function EditZone({zoomOptions}) {
     const [zoneRef, setZoneRef] = useState(null);
     const zoneRectangle = useMemo(() => zoneRef && zoneRef.getBoundingClientRect(), [zoneRef]);
     const {editorStore} = useRootStore();
-    useWatchKeypressModes();
+    useWatchKeypressModes(zoneRef);
     useDrawSelectZoneMode(zoneRef, zoneRectangle);
     const applyZoom = useZoomModes(zoneRef, zoomOptions);
     const cursorStyle = useEditCursorStyle();

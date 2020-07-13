@@ -1,12 +1,12 @@
 import { EditorStore } from "./editor.store";
-import {KeyboardStore} from "./keyboard.store";
+import {DeviceInputStore} from "./deviceInputStore";
 
 export class RootStore {
     editorStore: EditorStore = null;
-    keyboardStore: KeyboardStore = null;
+    deviceInputStore: DeviceInputStore = null;
 
     constructor() {
         this.editorStore = new EditorStore(this);
-        this.keyboardStore = new KeyboardStore(this);
+        this.deviceInputStore = new DeviceInputStore(this);
     }
 }
