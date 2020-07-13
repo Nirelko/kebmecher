@@ -4,24 +4,24 @@ import {useRootStore} from "../providers/root-store.provider";
 export default function useDetectKeypress(zoneRef: HTMLElement) {
     const {deviceInputStore} = useRootStore();
 
-    function onMouseHold(event: MouseEvent) {
+    function onMouseHold() {
         deviceInputStore.setMouseState(true);
     }
 
-    function onMouseRelease(event: MouseEvent) {
+    function onMouseRelease() {
         deviceInputStore.setMouseState(false);
     }
 
-    function onKeyHold(e: KeyboardEvent) {
-        if(deviceInputStore.pressedKeys[e.key]) {
+    function onKeyHold(event: KeyboardEvent) {
+        if(deviceInputStore.pressedKeys[event.key]) {
             return;
         }
 
-        deviceInputStore.keyHold(e.key);
+        deviceInputStore.keyHold(event.key);
     }
 
-    function onKeyRelease(e: KeyboardEvent) {
-        deviceInputStore.keyRelease(e.key);
+    function onKeyRelease(event: KeyboardEvent) {
+        deviceInputStore.keyRelease(event.key);
     }
 
     useEffect(() => {
