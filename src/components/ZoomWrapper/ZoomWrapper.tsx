@@ -38,6 +38,9 @@ function ZoomWrapper({children}) {
         pinch: disabled,
         doubleClick: doubleClickSettings,
         scalePadding: disabled,
+        onZoomChange: ({scale, positionX: translateX, positionY: translateY}) => {
+            editorStore.setZoomData({scale, translateX, translateY});
+        }
     }
 
     return (

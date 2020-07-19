@@ -4,9 +4,16 @@ import {BaseStore} from "./base.store";
 import {DrawingSelectZoneModel} from "../models/drawing-select-zone.model";
 import {KEYS_TO_EDIT_MODE, EditMode} from "../constants/keys-to-edit-mode.constant";
 
+export interface IZoomData {
+    scale: number;
+    translateX: number;
+    translateY: number;
+}
+
 export class EditorStore extends BaseStore {
     @observable selectZones: Array<SelectZoneModel> = [];
     @observable drawingSelectZone: DrawingSelectZoneModel = null;
+    @observable zoomData: IZoomData = {scale: 1, translateY: 0, translateX: 0};
 
     @computed
     get editMode(): EditMode {
@@ -43,5 +50,10 @@ export class EditorStore extends BaseStore {
     @action
     setDrawingSelectZone(selectZone: DrawingSelectZoneModel) {
         this.drawingSelectZone = selectZone;
+    }
+
+    @action
+    setZoomData(newZoomData: Partial<IZoomData>) {
+        Object.assign(this.zoomData, newZoomData);
     }
 }
