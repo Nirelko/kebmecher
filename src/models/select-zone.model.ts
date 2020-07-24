@@ -1,32 +1,21 @@
 import {action} from 'mobx';
-import {v4 as uuidV4} from 'uuid';
-import {ResizableDelta} from "react-rnd";
 import {IRectangle} from "./rectangle.model";
+import {BaseModel} from "./base-model";
 
 export interface ISelectZone extends IRectangle{
 }
 
 export interface SelectZoneModel extends ISelectZone {
 }
-export class SelectZoneModel {
-    id: string;
-
+export class SelectZoneModel extends BaseModel {
     constructor(initData: Partial<ISelectZone>) {
-        this.id = uuidV4();
+        super();
+
         Object.assign(this, initData);
     }
 
     @action
     update(updateData: Partial<ISelectZone>) {
         Object.assign(this, updateData);
-    }
-
-    @action
-    merge({width, height, ...updateData}: ResizableDelta) {
-        this.update({
-            ...updateData,
-            width: this.width + width,
-            height: this.height + height
-        });
     }
 }

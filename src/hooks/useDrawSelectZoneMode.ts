@@ -7,7 +7,7 @@ export default function useDrawSelectZoneMode(
     zoneRef: HTMLElement,
     drawableZoneRectangle: DOMRect
 ) {
-    const {editorStore} = useRootStore();
+    const {editorStore, selectZoneController} = useRootStore();
 
     function onMouseMove(event: MouseEvent) {
         const {drawingSelectZone} = editorStore;
@@ -29,7 +29,7 @@ export default function useDrawSelectZoneMode(
         }
 
         const {x: startX, y: startY} = calculateOnZoneLocation(drawableZoneRectangle, event);
-        editorStore.startDrawing({
+        selectZoneController.startDrawing({
                 startX: startX,
                 startY: startY,
                 endX: startX,
@@ -43,7 +43,7 @@ export default function useDrawSelectZoneMode(
             return;
         }
 
-        editorStore.finishDrawing()
+        selectZoneController.finishDrawing()
     }
 
     useEffect(() => {

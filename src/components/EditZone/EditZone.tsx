@@ -12,6 +12,7 @@ import {useEditCursorStyle} from "./useEditCursorStyle";
 import {EditZoneProvider} from "./edit-zone.provider";
 import {useZoomModes} from "../../hooks/useZoomModes";
 import ZoomWrapper from "../ZoomWrapper/ZoomWrapper";
+import {useRedoUndo} from "../../hooks/useRedoUndo";
 
 interface ZoneProps {
     cursor: CursorProperty;
@@ -37,6 +38,7 @@ function EditZone({zoomOptions}) {
     useDrawSelectZoneMode(zoneRef, zoneRectangle);
     const applyZoom = useZoomModes(zoneRef, zoomOptions);
     const cursorStyle = useEditCursorStyle();
+    useRedoUndo();
 
     return (
         <EditZoneProvider zoneRef={zoneRef} rectangle={zoneRectangle}>
@@ -46,8 +48,10 @@ function EditZone({zoomOptions}) {
                   onClick={applyZoom}
             >
                 {editorStore.drawingSelectZone && <DrawingSelectZone/>}
-                {editorStore.selectZones.map(selectZone => <SelectZone key={selectZone.id}
-                                                                       selectZone={selectZone}/>)}
+                {Object.keys(editorStore.selectZones).map(id => (
+                        <SelectZone key={id} selectZone={editorStore.selectZones[id].model}/>
+                    )
+                )}
             </Zone>
         </EditZoneProvider>
     );
@@ -66,7 +70,8 @@ function ZoomableEditZone(props) {
                 </TransformComponent>
             )}
         </ZoomWrapper>
-    );4
+    );
+    4
 }
 
 

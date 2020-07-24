@@ -1,15 +1,19 @@
 import React from 'react';
+import {observer} from 'mobx-react';
 import { Rnd, Props } from 'react-rnd';
+import {noop} from 'lodash';
 import {IRectangle} from "../../models/rectangle.model";
 import FloatingRectangle from "../FloatingRectangle/FloatingRectangle";
 
 interface DynamicRectangleProps {
     rectangle: IRectangle;
     dynamicProps?: Props;
+    getRef?: (rectangle: Rnd) => void;
 }
 
-export default function DynamicRectangle({rectangle, dynamicProps = {}}: DynamicRectangleProps) {
+function DynamicRectangle({rectangle, dynamicProps = {}, getRef = noop}: DynamicRectangleProps) {
     return <Rnd
+        ref={getRef}
         default={{
             x: rectangle.x,
             y: rectangle.y,
@@ -17,8 +21,10 @@ export default function DynamicRectangle({rectangle, dynamicProps = {}}: Dynamic
             height: rectangle.height,
         }}
         {...dynamicProps}
-    bounds='.zone'>
+        bounds='.zone'>
         <FloatingRectangle/>
     </Rnd>
 }
+
+export default observer(DynamicRectangle);
 

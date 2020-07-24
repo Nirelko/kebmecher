@@ -1,43 +1,44 @@
 import {action, computed, observable} from 'mobx';
 import {SelectZoneModel} from "../models/select-zone.model";
-import {BaseStore} from "./base.store";
+import {BaseRootStoreItem} from "./root-store/base-root-store-item";
 import {DrawingSelectZoneModel} from "../models/drawing-select-zone.model";
 import {KEYS_TO_EDIT_MODE, EditMode} from "../constants/keys-to-edit-mode.constant";
+import {Rnd} from "react-rnd";
 
-export class EditorStore extends BaseStore {
-    @observable selectZones: Array<SelectZoneModel> = [];
+export interface SelectZoneData {
+    ref: Rnd;
+    model: SelectZoneModel;
+}
+
+export class EditorStore extends BaseRootStoreItem {
+    @observable selectZones: Record<string, SelectZoneData> = {};
     @observable drawingSelectZone: DrawingSelectZoneModel = null;
-
-    @computed
-    get editMode(): EditMode {
-        const {deviceInputStore} = this.rootStore;
-        const pressedKeys = Object.keys(deviceInputStore.pressedKeys);
-        const keyPress = pressedKeys.sort().join(" ");
-
-        return KEYS_TO_EDIT_MODE[keyPress] || EditMode.free;
-    }
 
     constructor(props) {
         super(props);
     }
 
+    @computed
+    get editMode(): EditMode {
+        const {deviceInputStore} = this.rootStore;
+        const keySetPress = deviceInputStore.getPressedKeySet();
+
+        return KEYS_TO_EDIT_MODE[keySetPress] || EditMode.free;
+    }
+
     @action
     addSelectZone(selectZone: SelectZoneModel) {
-        this.selectZones.push(selectZone);
+        this.selectZones[selectZone.id] = { model: selectZone, ref: null };
     }
 
     @action
-    startDrawing(initData: Partial<DrawingSelectZoneModel>) {
-        const drawingSelectZone = new DrawingSelectZoneModel(initData);
-        this.drawingSelectZone = drawingSelectZone;
-
-        return drawingSelectZone;
+    setSelectZoneRef(id, selectZoneRef: Rnd) {
+        this.selectZones[id].ref = selectZoneRef;
     }
 
     @action
-    finishDrawing() {
-        this.addSelectZone(this.drawingSelectZone.convertToSelectZone());
-        this.drawingSelectZone = null;
+    removeSelectZone(id: string) {
+        delete this.selectZones[id];
     }
 
     @action

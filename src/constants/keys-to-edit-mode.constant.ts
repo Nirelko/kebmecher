@@ -11,6 +11,7 @@ export enum EditMode {
 export enum SHORTCUT_KEYS {
     control = 'Control',
     z = 'z',
+    y = 'y',
     shift = 'Shift',
     h = 'h'
 }

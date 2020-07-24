@@ -1,6 +1,6 @@
-import {RootStore} from 'root.store';
+import {RootStore} from 'src/stores/root-store/root.store';
 
-export abstract class BaseStore {
+export abstract class BaseRootStoreItem {
     rootStore: RootStore;
 
     protected constructor(rootStore: RootStore) {

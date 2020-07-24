@@ -1,11 +1,10 @@
 import React, {useCallback} from 'react';
 import {observer} from "mobx-react";
-import {DraggableData, Props, ResizableDelta} from "react-rnd";
+import {DraggableData, Props, ResizableDelta, Rnd} from "react-rnd";
 import {SelectZoneModel} from "../../models/select-zone.model";
 import DynamicRectangle from "../DynamicRectangle/DynamicRectangle";
 import {useRootStore} from "../../providers/root-store.provider";
 import {EditMode} from "../../constants/keys-to-edit-mode.constant";
-import {calculateOnZoneLocation} from "../../utils/select-zone.utils";
 import {useEditZoneContext} from "../EditZone/edit-zone.provider";
 
 interface SelectZoneProps {
@@ -13,8 +12,16 @@ interface SelectZoneProps {
 }
 
 function SelectZone({selectZone}: SelectZoneProps) {
-    const {editorStore} = useRootStore();
+    const {editorStore, selectZoneController} = useRootStore();
     const {rectangle: editZoneRectangle} = useEditZoneContext();
+
+    const loadSelectZoneRef = useCallback((selectZoneRef: Rnd) => {
+        if(!selectZoneRef) {
+            return;
+        }
+
+        editorStore.setSelectZoneRef(selectZone.id, selectZoneRef);
+    }, [editorStore, selectZone.id]);
 
     const onResizeStop = useCallback((event, direction, elementRef, delta: ResizableDelta) => {
         const newPosition = {x: selectZone.x, y: selectZone.y};
@@ -27,12 +34,12 @@ function SelectZone({selectZone}: SelectZoneProps) {
             newPosition.y -= delta.height;
         }
 
-        selectZone.merge({...delta, ...newPosition })
-    }, [selectZone, editZoneRectangle, calculateOnZoneLocation]);
+        selectZoneController.merge(selectZone, {...delta, ...newPosition })
+    }, [selectZone, editZoneRectangle, selectZoneController]);
 
     const onDragStop = useCallback((e, {x, y}: DraggableData) => {
-        selectZone.update({x, y})
-    }, [selectZone]);
+        selectZoneController.update(selectZone, {x, y})
+    }, [selectZone, selectZoneController]);
 
     const dynamicSettings: Props = {
         onResizeStop,
@@ -44,7 +51,7 @@ function SelectZone({selectZone}: SelectZoneProps) {
         dynamicSettings.disableDragging = true;
     }
 
-    return <DynamicRectangle rectangle={selectZone} dynamicProps={dynamicSettings} />
+    return <DynamicRectangle rectangle={selectZone} dynamicProps={dynamicSettings} getRef={loadSelectZoneRef} />
 }
 
 export default observer(SelectZone);
