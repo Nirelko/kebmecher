@@ -21,7 +21,7 @@ interface ZoneProps {
 const BackgroundImage = styled.img`
 position: absolute;
 width: 100%;
-object-fit: scale-down;
+object-fit: contain;
 height: 100%;
 `
 

@@ -1,12 +1,10 @@
 import React, {createContext, useContext} from 'react';
 import {RootStore} from "../stores/root-store/root.store";
 
-let rootStore: RootStore = null;
+let rootStore: RootStore = new RootStore();
 export const RootStoreContext = createContext<RootStore>(rootStore);
 
 export function RootStoreProvider({children}) {
-    rootStore = new RootStore();
-
     return (
         <RootStoreContext.Provider value={rootStore}>
             {children}
