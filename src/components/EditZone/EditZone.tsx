@@ -18,6 +18,13 @@ interface ZoneProps {
     cursor: CursorProperty;
 }
 
+const BackgroundImage = styled.img`
+position: absolute;
+width: 100%;
+object-fit: scale-down;
+height: 100%;
+`
+
 const Zone = styled.div<ZoneProps>`
     position: relative;
     width: 1200px;
@@ -47,6 +54,7 @@ function EditZone({zoomOptions}) {
                   cursor={cursorStyle}
                   onClick={applyZoom}
             >
+                {editorStore.imageSrc && <BackgroundImage src={editorStore.imageSrc} />}
                 {editorStore.drawingSelectZone && <DrawingSelectZone/>}
                 {Object.keys(editorStore.selectZones).map(id => (
                         <SelectZone key={id} selectZone={editorStore.selectZones[id].model}/>

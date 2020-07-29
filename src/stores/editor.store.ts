@@ -13,6 +13,7 @@ export interface SelectZoneData {
 export class EditorStore extends BaseRootStoreItem {
     @observable selectZones: Record<string, SelectZoneData> = {};
     @observable drawingSelectZone: DrawingSelectZoneModel = null;
+    @observable imageSrc: string = null;
 
     constructor(props) {
         super(props);
@@ -28,12 +29,17 @@ export class EditorStore extends BaseRootStoreItem {
 
     @action
     addSelectZone(selectZone: SelectZoneModel) {
-        this.selectZones[selectZone.id] = { model: selectZone, ref: null };
+        this.selectZones[selectZone.id] = {model: selectZone, ref: null};
     }
 
     @action
     setSelectZoneRef(id, selectZoneRef: Rnd) {
         this.selectZones[id].ref = selectZoneRef;
+    }
+
+    @action
+    setImageSrc(imageSrc: string) {
+        this.imageSrc = imageSrc;
     }
 
     @action
