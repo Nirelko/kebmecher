@@ -90,7 +90,7 @@
   },
   "dependencies": {
     "@asyarb/use-resize-observer": "^2.0.2",
-    "axios": "^0.19.1",
+    "axios": "^0.21.1",
     "formik": "^2.1.4",
     "mobx": "^5.15.2",
     "mobx-react": "^6.1.5",
